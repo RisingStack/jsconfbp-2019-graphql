@@ -10,7 +10,7 @@ const {
 
 const { resolveQuery, createComment } = require('../fetcher');
 const {
-  Node, PageInfo, FilterOperation, OrderDirection, FieldError, Datetime,
+  Node, PageInfo, FilterOperation, OrderDirection, Datetime,
 } = require('./common');
 
 const CommentField = new GraphQLEnumType({
@@ -95,7 +95,6 @@ const CommentMutateResponseType = new GraphQLObjectType({
   name: 'CommentMutateResponseType',
   fields: {
     comment: { type: Comment },
-    errors: { type: new GraphQLList(FieldError) },
   },
 });
 

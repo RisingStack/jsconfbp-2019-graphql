@@ -57,15 +57,6 @@ const OrderDirection = new GraphQLEnumType({
   },
 });
 
-const FieldError = new GraphQLObjectType({
-  name: 'FieldError',
-  fields: {
-    label: { type: GraphQLString },
-    value: { type: GraphQLString },
-    message: { type: GraphQLString },
-  },
-});
-
 const Datetime = new GraphQLScalarType({
   name: 'Datetime',
   description: 'A datetime as an ISO 8601 formatted string',
@@ -77,6 +68,5 @@ module.exports = {
   PageInfo,
   FilterOperation,
   OrderDirection,
-  FieldError,
   Datetime,
 };

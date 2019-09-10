@@ -12,7 +12,7 @@ const { get } = require('lodash');
 
 const { resolveQuery, createUser } = require('../fetcher');
 const {
-  Node, PageInfo, FilterOperation, OrderDirection, FieldError,
+  Node, PageInfo, FilterOperation, OrderDirection,
 } = require('./common');
 const { PostConnection, PostFieldFilter, PostFieldOrder } = require('./post');
 const { CommentConnection, CommentFieldFilter, CommentFieldOrder } = require('./comment');
@@ -113,7 +113,6 @@ const UserMutateResponseType = new GraphQLObjectType({
   name: 'UserMutateResponseType',
   fields: {
     user: { type: User },
-    errors: { type: new GraphQLList(FieldError) },
   },
 });
 
