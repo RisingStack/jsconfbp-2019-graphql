@@ -38,13 +38,13 @@ const PageInfo = new GraphQLObjectType({
 const FilterOperation = new GraphQLEnumType({
   name: 'FilterOperation',
   values: {
-    eq: { value: 'eq', description: 'Field must be equal to value.' },
-    ge: { value: 'ge', description: 'Field must be greater than or equal to value.' },
-    gt: { value: 'gt', description: 'Field must be greater than value.' },
-    like: { value: 'like', description: 'Field must be like value, % is any String.' },
-    le: { value: 'le', description: 'Field must be less than or equal to value.' },
-    lt: { value: 'lt', description: 'Field must be less than value.' },
-    ne: { value: 'ne', description: 'Field must not equal value.' },
+    eq: { value: '=', description: 'Field must be equal to value.' },
+    ge: { value: '>=', description: 'Field must be greater than or equal to value.' },
+    gt: { value: '>', description: 'Field must be greater than value.' },
+    like: { value: 'LIKE', description: 'Field must be like value, % is any String.' },
+    le: { value: '<=', description: 'Field must be less than or equal to value.' },
+    lt: { value: '<', description: 'Field must be less than value.' },
+    ne: { value: '!=', description: 'Field must not equal value.' },
   },
 });
 

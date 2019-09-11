@@ -8,27 +8,6 @@ const db = require('./db');
   TODO: handle errors ?
 */
 
-const compileOperator = (operator) => {
-  switch (operator) {
-    case 'eq':
-      return '=';
-    case 'ge':
-      return '>=';
-    case 'gt':
-      return '>';
-    case 'like':
-      return 'LIKE';
-    case 'le':
-      return '<=';
-    case 'lt':
-      return '<';
-    case 'ne':
-      return '!=';
-    default:
-      throw new Error('Unknown operator');
-  }
-};
-
 const getPgQueries = ({ table, args }) => {
   const {
     order, limit, offset, filters,
@@ -44,7 +23,7 @@ const getPgQueries = ({ table, args }) => {
       filter = ' WHERE ';
       whereAdded = true;
     }
-    filter += `${field} ${compileOperator(operation)} '${operation === 'like' ? `%${value}%` : value}'`;
+    filter += `${field} ${operation} '${operation === 'LIKE' ? `%${value}%` : value}'`;
     query += filter;
     countQuery += filter;
   });

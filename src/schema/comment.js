@@ -56,7 +56,7 @@ const Comment = new GraphQLObjectType({
         resolve: async (parent) => {
           const resp = await resolveQuery({
             table: 'users',
-            args: { filters: [{ field: 'email', operation: 'eq', value: parent.author }] },
+            args: { filters: [{ field: 'email', operation: '=', value: parent.author }] },
           });
           return resp.edges[0].node;
         },
@@ -66,7 +66,7 @@ const Comment = new GraphQLObjectType({
         resolve: async (parent) => {
           const resp = await resolveQuery({
             table: 'posts',
-            args: { filters: [{ field: 'id', operation: 'eq', value: parent.post }] },
+            args: { filters: [{ field: 'id', operation: '=', value: parent.post }] },
           });
           return resp.edges[0].node;
         },

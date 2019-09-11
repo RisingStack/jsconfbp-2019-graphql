@@ -57,7 +57,7 @@ const Post = new GraphQLObjectType({
         resolve: async (parent) => {
           const resp = await resolveQuery({
             table: 'users',
-            args: { filters: [{ field: 'email', operation: 'eq', value: parent.author }] },
+            args: { filters: [{ field: 'email', operation: '=', value: parent.author }] },
           });
           return resp.edges[0].node;
         },
@@ -77,7 +77,7 @@ const Post = new GraphQLObjectType({
             ...args,
             filters: [
               ...get(args, 'filters', []).filter((filter) => filter.field !== 'post'),
-              { field: 'post', operation: 'eq', value: parent.id },
+              { field: 'post', operation: '=', value: parent.id },
             ],
           },
         }),

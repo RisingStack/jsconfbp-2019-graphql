@@ -67,7 +67,7 @@ const User = new GraphQLObjectType({
           ...args,
           filters: [
             ...get(args, 'filters', []).filter((filter) => filter.field !== 'author'),
-            { field: 'author', operation: 'eq', value: parent.email },
+            { field: 'author', operation: '=', value: parent.email },
           ],
         },
       }),
@@ -86,7 +86,7 @@ const User = new GraphQLObjectType({
           ...args,
           filters: [
             ...get(args, 'filters', []).filter((filter) => filter.field !== 'author'),
-            { field: 'author', operation: 'eq', value: parent.email },
+            { field: 'author', operation: '=', value: parent.email },
           ],
         },
       }),
