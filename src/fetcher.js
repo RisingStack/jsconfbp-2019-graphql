@@ -2,12 +2,6 @@ const uuid = require('uuidv4').default;
 const { get } = require('lodash');
 const db = require('./db');
 
-/*
-  TODO: OR operator filter schema rework ?
-  TODO: after and cursors ?
-  TODO: handle errors ?
-*/
-
 const getPgQueries = ({ table, args }) => {
   const {
     order, limit, offset, filters,
