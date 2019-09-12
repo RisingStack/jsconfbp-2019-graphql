@@ -1,3 +1,11 @@
 # jsconfbp-2019-graphq
 
-createdb gqlTraining
+## Prerequisites
+
+- node (v10 or higher), npm
+- docker
+- docker-compose
+
+## Database
+
+- docker-compose up -d

@@ -1,7 +1,21 @@
 const { Pool } = require('pg');
 
+const config = require('./config.js');
+
+const {
+  user,
+  password,
+  database,
+  host,
+  port,
+} = config.dbConnectionInfo;
+
 const pool = new Pool({
-  database: 'gqlTraining',
+  database,
+  password,
+  host,
+  port,
+  user,
 });
 
 const createTables = () => {

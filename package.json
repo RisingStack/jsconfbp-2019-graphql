@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/server.js",
+    "start": "nodemon -r dotenv/config src/server.js",
     "lint": "eslint --ignore-path .gitignore ."
   },
   "husky": {
@@ -33,6 +33,7 @@
     "uuidv4": "^5.0.1"
   },
   "devDependencies": {
+    "dotenv": "8.1.0",
     "eslint": "^6.3.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "^14.0.0",

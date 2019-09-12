@@ -3,6 +3,7 @@ const graphqlHTTP = require('express-graphql');
 
 const db = require('./db');
 const schema = require('./schema');
+const config = require('./config');
 
 const app = express();
 
@@ -23,4 +24,4 @@ app.use('/graphql', graphqlHTTP(async () => ({
 })));
 
 // eslint-disable-next-line no-console
-app.listen(8000, () => console.log('Express GraphQL Server Is Listening on port 8000'));
+app.listen(config.port, () => console.log(`Express GraphQL Server Is Listening on port ${config.port}`));
