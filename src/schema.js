@@ -4,10 +4,11 @@ const {
   GraphQLInt,
   GraphQLSchema,
   GraphQLList,
+  GraphQLNonNull,
 } = require('graphql');
 
 const {
-  getHello, resolveQuery,
+  getHello, resolveQuery, signin,
 } = require('./fetcher');
 const {
   UserConnection, UserFieldFilter, UserFieldOrder, UserMutations, User,
@@ -25,6 +26,14 @@ const queryType = new GraphQLObjectType({
     hello: {
       type: GraphQLString,
       resolve: () => getHello(),
+    },
+    signin: {
+      type: User,
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (_, args) => signin(args),
     },
     users: {
       type: UserConnection,

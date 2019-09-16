@@ -1,5 +1,6 @@
 const uuid = require('uuidv4').default;
 const { get } = require('lodash');
+const bcrypt = require('bcrypt');
 const db = require('./db');
 
 const getPgQueries = ({ table, args }) => {
@@ -9,18 +10,20 @@ const getPgQueries = ({ table, args }) => {
   let query = `SELECT * FROM ${table}`;
   let countQuery = `SELECT COUNT(*) FROM ${table}`;
   let whereAdded = false;
-  filters.forEach(({ field, value, operation }) => {
-    let filter = null;
-    if (whereAdded) {
-      filter = ' AND ';
-    } else {
-      filter = ' WHERE ';
-      whereAdded = true;
-    }
-    filter += `${field} ${operation} '${operation === 'LIKE' ? `%${value}%` : value}'`;
-    query += filter;
-    countQuery += filter;
-  });
+  if (filters) {
+    filters.forEach(({ field, value, operation }) => {
+      let filter = null;
+      if (whereAdded) {
+        filter = ' AND ';
+      } else {
+        filter = ' WHERE ';
+        whereAdded = true;
+      }
+      filter += `${field} ${operation} '${operation === 'LIKE' ? `%${value}%` : value}'`;
+      query += filter;
+      countQuery += filter;
+    });
+  }
   query += ` ORDER BY ${get(order, 'field', 'id')} ${get(order, 'direction', 'asc')}`;
   if (limit) {
     query += ` LIMIT ${limit}`;
@@ -56,38 +59,70 @@ const resolveQuery = async ({ table, args }) => {
   };
 };
 
+const comparePassword = (password, passwordDigest) => new Promise((resolve, reject) => (
+  bcrypt.compare(password, passwordDigest, (err, response) => {
+    if (err) {
+      reject(err);
+    } else if (response) {
+      resolve(response);
+    } else {
+      reject(new Error('Password missmatch'));
+    }
+  })
+));
+
+
+const signin = async (args) => {
+  const { email, password } = args;
+  const { rows } = await db.query({
+    text: 'SELECT * FROM users WHERE email = $1',
+    values: [email],
+  });
+  const user = rows[0];
+  await comparePassword(password, user.password_digest);
+  delete user.password_digest;
+  return user;
+};
+
+const hashPassword = (password) => new Promise((resolve, reject) => (
+  bcrypt.hash(password, 10, (err, hash) => (err ? reject(err) : resolve(hash)))
+));
+
 const createUser = async (args) => {
-  const { input } = args;
-  const query = {
-    text: 'INSERT INTO users(id, name, username, email) VALUES($1, $2, $3, $4) RETURNING *',
-    values: [uuid(), input.name, input.username, input.email],
-  };
-  const { rows } = await db.query(query);
-  return { user: rows[0] };
+  const {
+    password, name, username, email,
+  } = get(args, 'input', {});
+  const hashedPassword = await hashPassword(password);
+  const { rows } = await db.query({
+    text: 'INSERT INTO users(id, name, username, email, password_digest) VALUES($1, $2, $3, $4, $5) RETURNING *',
+    values: [uuid(), name, username, email, hashedPassword],
+  });
+  const user = rows[0];
+  delete user.password_digest;
+  return { user };
 };
 
 const createPost = async (args) => {
-  const { input } = args;
-  const query = {
+  const { content, author } = get(args, 'input', {});
+  const { rows } = await db.query({
     text: 'INSERT INTO posts(id, content, author, timestamp) VALUES($1, $2, $3, $4) RETURNING *',
-    values: [uuid(), input.content, input.author, new Date()],
-  };
-  const { rows } = await db.query(query);
+    values: [uuid(), content, author, new Date()],
+  });
   return { post: rows[0] };
 };
 
 const createComment = async (args) => {
-  const { input } = args;
-  const query = {
+  const { content, author, post } = get(args, 'input', {});
+  const { rows } = await db.query({
     text: 'INSERT INTO comments(id, content, author, post, timestamp) VALUES($1, $2, $3, $4, $5) RETURNING *',
-    values: [uuid(), input.content, input.author, input.post, new Date()],
-  };
-  const { rows } = await db.query(query);
+    values: [uuid(), content, author, post, new Date()],
+  });
   return { comment: rows[0] };
 };
 
 module.exports = {
   getHello,
+  signin,
   resolveQuery,
   createUser,
   createComment,

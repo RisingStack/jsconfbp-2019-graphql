@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/RisingStack/jsconfbp-2019-graphql#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "graphql": "^14.5.4",

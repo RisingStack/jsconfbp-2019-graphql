@@ -24,7 +24,8 @@ const createTables = () => {
       id UUID PRIMARY KEY,
       name VARCHAR(30) NOT NULL,
       username VARCHAR(30) NOT NULL,
-      email VARCHAR(30) NOT NULL UNIQUE
+      email VARCHAR(30) NOT NULL UNIQUE,
+      password_digest VARCHAR(100) NOT NULL
     )`,
     `CREATE TABLE IF NOT EXISTS posts(
       id UUID PRIMARY KEY,
