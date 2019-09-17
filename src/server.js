@@ -1,5 +1,7 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
+const helmet = require('helmet');
+const cors = require('cors');
 
 const db = require('./db');
 const schema = require('./schema');
@@ -8,6 +10,14 @@ const config = require('./config');
 const app = express();
 
 db.createTables();
+
+app.use(helmet());
+
+app.use(cors({
+  origin: [/http:\/\/localhost:\d+$/],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 
 app.use('/graphql', graphqlHTTP(async () => ({
   schema,
