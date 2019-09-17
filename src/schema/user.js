@@ -109,13 +109,6 @@ const UserConnection = new GraphQLObjectType({
   },
 });
 
-const UserMutateResponseType = new GraphQLObjectType({
-  name: 'UserMutateResponseType',
-  fields: {
-    user: { type: User },
-  },
-});
-
 const CreateUserInput = new GraphQLInputObjectType({
   name: 'CreateUserInput',
   fields: {
@@ -130,7 +123,7 @@ const UserMutations = new GraphQLObjectType({
   name: 'UserMutations',
   fields: {
     createUser: {
-      type: UserMutateResponseType,
+      type: User,
       args: {
         input: { type: CreateUserInput },
       },

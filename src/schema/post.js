@@ -101,13 +101,6 @@ const PostConnection = new GraphQLObjectType({
   },
 });
 
-const PostMutateResponseType = new GraphQLObjectType({
-  name: 'PostMutateResponseType',
-  fields: {
-    post: { type: Post },
-  },
-});
-
 const CreatePostInput = new GraphQLInputObjectType({
   name: 'CreatePostInput',
   fields: {
@@ -120,7 +113,7 @@ const PostMutations = new GraphQLObjectType({
   name: 'PostMutations',
   fields: {
     createPost: {
-      type: PostMutateResponseType,
+      type: Post,
       args: {
         input: { type: CreatePostInput },
       },

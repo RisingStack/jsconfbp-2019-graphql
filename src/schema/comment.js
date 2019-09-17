@@ -91,13 +91,6 @@ const CommentConnection = new GraphQLObjectType({
   },
 });
 
-const CommentMutateResponseType = new GraphQLObjectType({
-  name: 'CommentMutateResponseType',
-  fields: {
-    comment: { type: Comment },
-  },
-});
-
 const CreateCommentInput = new GraphQLInputObjectType({
   name: 'CreateCommentInput',
   fields: {
@@ -111,7 +104,7 @@ const CommentMutations = new GraphQLObjectType({
   name: 'CommentMutations',
   fields: {
     createComment: {
-      type: CommentMutateResponseType,
+      type: Comment,
       args: {
         input: { type: CreateCommentInput },
       },

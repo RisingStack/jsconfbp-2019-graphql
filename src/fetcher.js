@@ -99,7 +99,7 @@ const createUser = async (args) => {
   });
   const user = rows[0];
   delete user.password_digest;
-  return { user };
+  return user;
 };
 
 const createPost = async (args) => {
@@ -108,7 +108,7 @@ const createPost = async (args) => {
     text: 'INSERT INTO posts(id, content, author, timestamp) VALUES($1, $2, $3, $4) RETURNING *',
     values: [uuid(), content, author, new Date()],
   });
-  return { post: rows[0] };
+  return rows[0];
 };
 
 const createComment = async (args) => {
@@ -117,7 +117,7 @@ const createComment = async (args) => {
     text: 'INSERT INTO comments(id, content, author, post, timestamp) VALUES($1, $2, $3, $4, $5) RETURNING *',
     values: [uuid(), content, author, post, new Date()],
   });
-  return { comment: rows[0] };
+  return rows[0];
 };
 
 module.exports = {
