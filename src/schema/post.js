@@ -21,6 +21,8 @@ const PostField = new GraphQLEnumType({
   values: {
     id: { value: 'id' },
     content: { value: 'content' },
+    title: { value: 'title' },
+    description: { value: 'description' },
     author: { value: 'author' },
     timestamp: { value: 'timestamp' },
   },
@@ -51,6 +53,8 @@ const Post = new GraphQLObjectType({
     const { User } = require('./user');
     return {
       id: { type: GraphQLID },
+      title: { type: GraphQLString },
+      description: { type: GraphQLString },
       content: { type: GraphQLString },
       author: {
         type: User,
@@ -59,7 +63,7 @@ const Post = new GraphQLObjectType({
             table: 'users',
             args: { filters: [{ field: 'email', operation: '=', value: parent.author }] },
           });
-          return resp.edges[0].node;
+          return get(resp, 'edges[0].node', {});
         },
       },
       timestamp: { type: Datetime },
@@ -106,6 +110,8 @@ const CreatePostInput = new GraphQLInputObjectType({
   fields: {
     content: { type: new GraphQLNonNull(GraphQLString) },
     author: { type: new GraphQLNonNull(GraphQLString) },
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    description: { type: new GraphQLNonNull(GraphQLString) },
   },
 });
 

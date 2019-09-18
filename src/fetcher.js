@@ -103,10 +103,12 @@ const createUser = async (args) => {
 };
 
 const createPost = async (args) => {
-  const { content, author } = get(args, 'input', {});
+  const {
+    content, author, title, description,
+  } = get(args, 'input', {});
   const { rows } = await db.query({
-    text: 'INSERT INTO posts(id, content, author, timestamp) VALUES($1, $2, $3, $4) RETURNING *',
-    values: [uuid(), content, author, new Date()],
+    text: 'INSERT INTO posts(id, title, description, content, author, timestamp) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+    values: [uuid(), title, description, content, author, new Date()],
   });
   return rows[0];
 };

@@ -29,6 +29,8 @@ const createTables = () => {
     )`,
     `CREATE TABLE IF NOT EXISTS posts(
       id UUID PRIMARY KEY,
+      title VARCHAR(30) NOT NULL,
+      description VARCHAR(100),
       content TEXT NOT NULL,
       author VARCHAR(30) NOT NULL,
       timestamp TIMESTAMP NOT NULL

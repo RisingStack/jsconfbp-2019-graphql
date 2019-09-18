@@ -7,6 +7,7 @@ const {
   GraphQLInputObjectType,
   GraphQLNonNull,
 } = require('graphql');
+const { get } = require('lodash');
 
 const { resolveQuery, createComment } = require('../fetcher');
 const {
@@ -58,7 +59,7 @@ const Comment = new GraphQLObjectType({
             table: 'users',
             args: { filters: [{ field: 'email', operation: '=', value: parent.author }] },
           });
-          return resp.edges[0].node;
+          return get(resp, 'edges[0].node', {});
         },
       },
       post: {
@@ -68,7 +69,7 @@ const Comment = new GraphQLObjectType({
             table: 'posts',
             args: { filters: [{ field: 'id', operation: '=', value: parent.post }] },
           });
-          return resp.edges[0].node;
+          return get(resp, 'edges[0].node', {});
         },
       },
       timestamp: { type: Datetime },
