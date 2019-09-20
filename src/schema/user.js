@@ -14,7 +14,7 @@ const { resolveQuery, createUser } = require('../fetcher');
 const {
   Node, PageInfo, FilterOperation, OrderDirection,
 } = require('./common');
-// const { PostConnection, PostFieldFilter, PostFieldOrder } = require('./post');
+const { PostConnection, PostFieldFilter, PostFieldOrder } = require('./post');
 const { CommentConnection, CommentFieldFilter, CommentFieldOrder } = require('./comment');
 
 const UserArgField = new GraphQLEnumType({
@@ -44,7 +44,6 @@ const UserFieldOrder = new GraphQLInputObjectType({
   },
 });
 
-// TODO: TASK 2. uncomment posts when TASK 2. is finished
 const User = new GraphQLObjectType({
   name: 'User',
   interfaces: [Node],
@@ -54,25 +53,25 @@ const User = new GraphQLObjectType({
     name: { type: GraphQLString },
     username: { type: GraphQLString },
     email: { type: GraphQLString },
-    // posts: {
-    //   type: PostConnection,
-    //   args: {
-    //     filters: { type: new GraphQLList(PostFieldFilter) },
-    //     order: { type: PostFieldOrder },
-    //     limit: { type: GraphQLInt },
-    //     offset: { type: GraphQLInt },
-    //   },
-    //   resolve: (parent, args) => resolveQuery({
-    //     table: 'posts',
-    //     args: {
-    //       ...args,
-    //       filters: [
-    //         ...get(args, 'filters', []).filter((filter) => filter.field !== 'author'),
-    //         { field: 'author', operation: '=', value: parent.email },
-    //       ],
-    //     },
-    //   }),
-    // },
+    posts: {
+      type: PostConnection,
+      args: {
+        filters: { type: new GraphQLList(PostFieldFilter) },
+        order: { type: PostFieldOrder },
+        limit: { type: GraphQLInt },
+        offset: { type: GraphQLInt },
+      },
+      resolve: (parent, args) => resolveQuery({
+        table: 'posts',
+        args: {
+          ...args,
+          filters: [
+            ...get(args, 'filters', []).filter((filter) => filter.field !== 'author'),
+            { field: 'author', operation: '=', value: parent.email },
+          ],
+        },
+      }),
+    },
     comments: {
       type: CommentConnection,
       args: {
