@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+require('dotenv/config');
+
 const db = require('../src/db');
 
 Promise.all(db.createTables()).then(() => {

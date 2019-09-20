@@ -1,7 +1,14 @@
-const uuid = require('uuidv4').default;
-const { get } = require('lodash');
+const { URL } = require('url');
+const querystring = require('querystring');
+
+const axios = require('axios');
 const bcrypt = require('bcrypt');
+const { get } = require('lodash');
+const uuid = require('uuidv4').default;
+
+const config = require('./config');
 const db = require('./db');
+
 
 const getPgQueries = ({ table, args }) => {
   const {
@@ -90,12 +97,12 @@ const hashPassword = (password) => new Promise((resolve, reject) => (
 
 const createUser = async (args) => {
   const {
-    password, name, username, email,
+    password, name, username, email, location,
   } = get(args, 'input', {});
   const hashedPassword = await hashPassword(password);
   const { rows } = await db.query({
-    text: 'INSERT INTO users(id, name, username, email, password_digest) VALUES($1, $2, $3, $4, $5) RETURNING *',
-    values: [uuid(), name, username, email, hashedPassword],
+    text: 'INSERT INTO users(id, name, username, email, password_digest, location) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+    values: [uuid(), name, username, email, hashedPassword, location],
   });
   const user = rows[0];
   delete user.password_digest;
@@ -122,11 +129,48 @@ const createComment = async (args) => {
   return rows[0];
 };
 
+
+async function getWeather({ location }) {
+  const APPID = config.openWeatherMapAPIKey;
+  const query = querystring.stringify({
+    q: location,
+    units: 'metric',
+    APPID,
+  });
+
+  const url = new URL('https://api.openweathermap.org/data/2.5/weather');
+  url.search = query;
+
+  const { data } = await axios
+    .get(url.toString());
+
+  const {
+    coord: {
+      lat,
+      lon,
+    },
+    main: {
+      humidity,
+      temp,
+      pressure,
+    },
+  } = data;
+
+  return {
+    lat,
+    lon,
+    humidity,
+    pressure,
+    temp,
+  };
+}
+
 module.exports = {
-  getHello,
-  signin,
-  resolveQuery,
-  createUser,
   createComment,
   createPost,
+  createUser,
+  getHello,
+  getWeather,
+  resolveQuery,
+  signin,
 };

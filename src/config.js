@@ -7,6 +7,7 @@ const config = {
     host: process.env.POSTGRES_HOST,
     port: process.env.POSTGRES_PORT,
   },
+  openWeatherMapAPIKey: process.env.OPENWEATHERMAP_APIKEY,
 };
 
 module.exports = config;
