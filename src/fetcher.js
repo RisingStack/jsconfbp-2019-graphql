@@ -120,10 +120,13 @@ const createPost = async (args) => {
   return rows[0];
 };
 
-// TODO: TASK 3. crateComment
-const createComment = async () => {
-  console.log('createComment');
-  return {};
+const createComment = async (args) => {
+  const { content, author, post } = get(args, 'input', {});
+  const { rows } = await db.query({
+    text: 'INSERT INTO comments(id, content, author, post, timestamp) VALUES($1, $2, $3, $4, $5) RETURNING *',
+    values: [uuid(), content, author, post, new Date()],
+  });
+  return rows[0];
 };
 
 
