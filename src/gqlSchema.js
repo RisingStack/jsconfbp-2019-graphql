@@ -3,7 +3,6 @@ const { buildSchema } = require('graphql');
 
 const { getHello, resolveQuery } = require('./fetcher');
 
-// TODO: TASK 1. Add posts query
 const schema = buildSchema(`
   enum OrderDirection {
     asc
@@ -39,15 +38,45 @@ const schema = buildSchema(`
     edges: [UserEdge]
   }
 
+  enum PostArgField {
+    id
+    title
+    description
+    content
+    author
+    timestamp
+  }
+  input PostFieldOrder {
+    field: PostArgField
+    direction: OrderDirection
+  }
+  type Post {
+    id: ID
+    title: String
+    description: String
+    content: String
+    author: String
+    timestamp: String
+  }
+  type PostEdge {
+    node: Post
+  }
+  type PostConnection {
+    pageInfo: PageInfo
+    edges: [PostEdge]
+  }
+
   type Query {
     hello: String
-    users: UserConnection
+    users(limit: Int, offset: Int, order: UserFieldOrder): UserConnection
+    posts(limit: Int, offset: Int, order: PostFieldOrder): PostConnection
   }
 `);
 
 const rootValue = {
   hello: () => getHello(),
   users: (args) => resolveQuery({ table: 'users', args }),
+  posts: (args) => resolveQuery({ table: 'posts', args }),
 };
 
 module.exports = {
