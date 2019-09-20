@@ -23,7 +23,7 @@ const {
   PostFieldFilter, PostFieldOrder, Post, PostConnection, PostMutations,
 } = require('./schema/post');
 const {
-  CommentFieldFilter, CommentFieldOrder, Comment, CommentConnection,
+  CommentFieldFilter, CommentFieldOrder, Comment, CommentConnection, CommentMutations,
 } = require('./schema/comment');
 
 const queryType = new GraphQLObjectType({
@@ -94,7 +94,10 @@ const mutationType = new GraphQLObjectType({
       type: PostMutations,
       resolve: () => PostMutations,
     },
-    // TODO: TASK 3. createComment mutation
+    comment: {
+      type: CommentMutations,
+      resolve: () => CommentMutations,
+    },
   },
 });
 

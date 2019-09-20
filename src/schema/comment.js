@@ -5,10 +5,11 @@ const {
   GraphQLEnumType,
   GraphQLList,
   GraphQLInputObjectType,
+  GraphQLNonNull,
 } = require('graphql');
 const { get } = require('lodash');
 
-const { resolveQuery } = require('../fetcher');
+const { resolveQuery, createComment } = require('../fetcher');
 const {
   Node, PageInfo, FilterOperation, OrderDirection, Datetime,
 } = require('./common');
@@ -91,8 +92,27 @@ const CommentConnection = new GraphQLObjectType({
   },
 });
 
-// TODO: TASK 3. CommentMutations and CreateCommentInput
-const CommentMutations = {};
+const CreateCommentInput = new GraphQLInputObjectType({
+  name: 'CreateCommentInput',
+  fields: {
+    content: { type: new GraphQLNonNull(GraphQLString) },
+    author: { type: new GraphQLNonNull(GraphQLString) },
+    post: { type: new GraphQLNonNull(GraphQLID) },
+  },
+});
+
+const CommentMutations = new GraphQLObjectType({
+  name: 'CommentMutations',
+  fields: {
+    createComment: {
+      type: Comment,
+      args: {
+        input: { type: CreateCommentInput },
+      },
+      resolve: (_, args) => createComment(args),
+    },
+  },
+});
 
 module.exports = {
   CommentArgField,
