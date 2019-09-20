@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/RisingStack/jsconfbp-2019-graphql#readme",
   "dependencies": {
+    "axios": "0.19.0",
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",

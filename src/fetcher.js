@@ -1,7 +1,14 @@
-const uuid = require('uuidv4').default;
-const { get } = require('lodash');
+const { URL } = require('url');
+const querystring = require('querystring');
+
+const axios = require('axios');
 const bcrypt = require('bcrypt');
+const { get } = require('lodash');
+const uuid = require('uuidv4').default;
+
+const config = require('./config');
 const db = require('./db');
+
 
 const getPgQueries = ({ table, args }) => {
   const {
@@ -122,11 +129,49 @@ const createComment = async (args) => {
   return rows[0];
 };
 
+
+async function getWeather() {
+  const city = 'London';
+  const APPID = config.openWeatherMapAPIKey;
+  const query = querystring.stringify({
+    q: city,
+    units: 'metric',
+    APPID,
+  });
+
+  const url = new URL('https://api.openweathermap.org/data/2.5/weather');
+  url.search = query;
+
+  const { data } = await axios
+    .get(url.toString());
+
+  const {
+    coord: {
+      lat,
+      lon,
+    },
+    main: {
+      humidity,
+      temp,
+      pressure,
+    },
+  } = data;
+
+  return {
+    lat,
+    lon,
+    humidity,
+    pressure,
+    temp,
+  };
+}
+
 module.exports = {
-  getHello,
-  signin,
-  resolveQuery,
-  createUser,
   createComment,
   createPost,
+  createUser,
+  getHello,
+  getWeather,
+  resolveQuery,
+  signin,
 };

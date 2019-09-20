@@ -8,8 +8,14 @@ const {
 } = require('graphql');
 
 const {
-  getHello, resolveQuery, signin,
+  getHello,
+  getWeather,
+  resolveQuery,
+  signin,
 } = require('./fetcher');
+const {
+  Weather,
+} = require('./schema/weather');
 const {
   UserConnection, UserFieldFilter, UserFieldOrder, UserMutations, User,
 } = require('./schema/user');
@@ -34,6 +40,15 @@ const queryType = new GraphQLObjectType({
         password: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: (_, args) => signin(args),
+    },
+    weather: {
+      type: Weather,
+      args: {
+        location: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+      },
+      resolve: () => getWeather(),
     },
     users: {
       type: UserConnection,

@@ -9,3 +9,7 @@
 ## Database
 
 - docker-compose up -d
+
+## Open Weather API
+
+Follow the instructions and get an access token at: https://openweathermap.org/appid
