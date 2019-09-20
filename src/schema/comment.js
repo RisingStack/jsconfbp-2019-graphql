@@ -10,7 +10,7 @@ const { get } = require('lodash');
 
 const { resolveQuery } = require('../fetcher');
 const {
-  Node, PageInfo, FilterOperation, OrderDirection,
+  Node, PageInfo, FilterOperation, OrderDirection, Datetime,
 } = require('./common');
 
 const CommentArgField = new GraphQLEnumType({
@@ -41,14 +41,13 @@ const CommentFieldOrder = new GraphQLInputObjectType({
   },
 });
 
-// TODO: TASK 2. uncomment post when TASK 2. is finished
 const Comment = new GraphQLObjectType({
   name: 'Comment',
   interfaces: [Node],
   isTypeOf: (value) => value instanceof Object,
   fields: () => {
     const { User } = require('./user');
-    // const { Post } = require('./post');
+    const { Post } = require('./post');
     return {
       id: { type: GraphQLID },
       content: { type: GraphQLString },
@@ -62,17 +61,17 @@ const Comment = new GraphQLObjectType({
           return get(resp, 'edges[0].node', {});
         },
       },
-      // post: {
-      //   type: Post,
-      //   resolve: async (parent) => {
-      //     const resp = await resolveQuery({
-      //       table: 'posts',
-      //       args: { filters: [{ field: 'id', operation: '=', value: parent.post }] },
-      //     });
-      //     return get(resp, 'edges[0].node', {});
-      //   },
-      // },
-      // timestamp: { type: Datetime },
+      post: {
+        type: Post,
+        resolve: async (parent) => {
+          const resp = await resolveQuery({
+            table: 'posts',
+            args: { filters: [{ field: 'id', operation: '=', value: parent.post }] },
+          });
+          return get(resp, 'edges[0].node', {});
+        },
+      },
+      timestamp: { type: Datetime },
     };
   },
 });

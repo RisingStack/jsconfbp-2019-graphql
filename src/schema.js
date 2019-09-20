@@ -20,7 +20,7 @@ const {
   UserConnection, UserFieldFilter, UserFieldOrder, UserMutations, User,
 } = require('./schema/user');
 const {
-  Post, PostMutations,
+  PostFieldFilter, PostFieldOrder, Post, PostConnection, PostMutations,
 } = require('./schema/post');
 const {
   CommentFieldFilter, CommentFieldOrder, Comment, CommentConnection,
@@ -60,8 +60,16 @@ const queryType = new GraphQLObjectType({
       },
       resolve: (_, args) => resolveQuery({ table: 'users', args }),
     },
-    // TODO: TASK 2. posts query
-    // posts: {}
+    posts: {
+      type: PostConnection,
+      args: {
+        filters: { type: new GraphQLList(PostFieldFilter) },
+        order: { type: PostFieldOrder },
+        limit: { type: GraphQLInt },
+        offset: { type: GraphQLInt },
+      },
+      resolve: (_, args) => resolveQuery({ table: 'posts', args }),
+    },
     comments: {
       type: CommentConnection,
       args: {

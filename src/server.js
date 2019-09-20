@@ -6,11 +6,11 @@ const cors = require('cors');
 const db = require('./db');
 
 // Graphql Types - cut rootValue from graphqlHTTP when used
-// const schema = require('./schema');
+const schema = require('./schema');
 const config = require('./config');
 
 // Raw Graphql schema language - add rootValue from graphqlHTTP when used
-const { schema, rootValue } = require('./gqlSchema');
+// const { schema, rootValue } = require('./gqlSchema');
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use(cors({
 
 app.use('/graphql', graphqlHTTP(async () => ({
   schema,
-  rootValue,
+  // rootValue,
   graphiql: true,
   customFormatErrorFn: (error) => {
     // eslint-disable-next-line no-console
