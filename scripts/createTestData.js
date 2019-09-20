@@ -3,7 +3,7 @@
 
 require('dotenv/config');
 
-const db = require('../src/db');
+const db = require('../src/server/db');
 
 Promise.all(db.createTables()).then(() => {
   Promise.all(db.createTestData()).then(() => {
