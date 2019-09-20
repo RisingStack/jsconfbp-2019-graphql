@@ -48,7 +48,7 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString),
         },
       },
-      resolve: () => getWeather(),
+      resolve: (_, args) => getWeather(args),
     },
     users: {
       type: UserConnection,

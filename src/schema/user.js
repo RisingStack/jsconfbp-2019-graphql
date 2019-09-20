@@ -10,7 +10,8 @@ const {
 } = require('graphql');
 const { get } = require('lodash');
 
-const { resolveQuery, createUser } = require('../fetcher');
+const { Weather } = require('./weather');
+const { resolveQuery, createUser, getWeather } = require('../fetcher');
 const {
   Node, PageInfo, FilterOperation, OrderDirection,
 } = require('./common');
@@ -49,10 +50,15 @@ const User = new GraphQLObjectType({
   interfaces: [Node],
   isTypeOf: (value) => value instanceof Object,
   fields: {
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    username: { type: GraphQLString },
-    email: { type: GraphQLString },
+    id: { type: new GraphQLNonNull(GraphQLID) },
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    username: { type: new GraphQLNonNull(GraphQLString) },
+    email: { type: new GraphQLNonNull(GraphQLString) },
+    location: { type: GraphQLString },
+    weather: {
+      type: Weather,
+      resolve: ({ location }) => (location ? getWeather({ location }) : {}),
+    },
     posts: {
       type: PostConnection,
       args: {
@@ -116,6 +122,10 @@ const CreateUserInput = new GraphQLInputObjectType({
     username: { type: new GraphQLNonNull(GraphQLString) },
     email: { type: new GraphQLNonNull(GraphQLString) },
     password: { type: new GraphQLNonNull(GraphQLString) },
+    location: {
+      type: GraphQLString,
+      defaultValue: 'Budapest',
+    },
   },
 });
 

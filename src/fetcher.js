@@ -97,12 +97,12 @@ const hashPassword = (password) => new Promise((resolve, reject) => (
 
 const createUser = async (args) => {
   const {
-    password, name, username, email,
+    password, name, username, email, location,
   } = get(args, 'input', {});
   const hashedPassword = await hashPassword(password);
   const { rows } = await db.query({
-    text: 'INSERT INTO users(id, name, username, email, password_digest) VALUES($1, $2, $3, $4, $5) RETURNING *',
-    values: [uuid(), name, username, email, hashedPassword],
+    text: 'INSERT INTO users(id, name, username, email, password_digest, location) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+    values: [uuid(), name, username, email, hashedPassword, location],
   });
   const user = rows[0];
   delete user.password_digest;
@@ -130,11 +130,10 @@ const createComment = async (args) => {
 };
 
 
-async function getWeather() {
-  const city = 'London';
+async function getWeather({ location }) {
   const APPID = config.openWeatherMapAPIKey;
   const query = querystring.stringify({
-    q: city,
+    q: location,
     units: 'metric',
     APPID,
   });

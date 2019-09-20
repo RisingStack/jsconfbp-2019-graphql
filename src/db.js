@@ -25,7 +25,8 @@ const createTables = () => {
       name VARCHAR(30) NOT NULL,
       username VARCHAR(30) NOT NULL,
       email VARCHAR(30) NOT NULL UNIQUE,
-      password_digest VARCHAR(100) NOT NULL
+      password_digest VARCHAR(100) NOT NULL,
+      location VARCHAR(100)
     )`,
     `CREATE TABLE IF NOT EXISTS posts(
       id UUID PRIMARY KEY,
@@ -60,12 +61,12 @@ const dropTables = () => {
 const createTestData = () => {
   // password for test user: password
   const testDataQueries = [
-    `INSERT INTO users(id, name, username, email, password_digest)
-    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b58c', 'Tyler', 'tyler1337', 'tyler@risingstack.com', '$2b$10$yv9DxXTpvBmBYKu8rXoSIONn3BZB5/jQRDPMKt/YUAq8eTYoXGwKu')
+    `INSERT INTO users(id, name, username, email, password_digest, location)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b58c', 'Tyler', 'tyler1337', 'tyler@risingstack.com', '$2b$10$yv9DxXTpvBmBYKu8rXoSIONn3BZB5/jQRDPMKt/YUAq8eTYoXGwKu', 'Budapest')
     RETURNING *
     `,
-    `INSERT INTO users(id, name, username, email, password_digest)
-    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b68c', 'Marla', 'marlaSinger', 'marla@risingstack.com', '$2b$10$yv9DxXTpvBmBYKu8rXoSIONn3BZB5/jQRDPMKt/YUAq8eTYoXGwKu')
+    `INSERT INTO users(id, name, username, email, password_digest, location)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b68c', 'Marla', 'marlaSinger', 'marla@risingstack.com', '$2b$10$yv9DxXTpvBmBYKu8rXoSIONn3BZB5/jQRDPMKt/YUAq8eTYoXGwKu', 'London')
     RETURNING *
     `,
     `INSERT INTO posts(id, title, description, content, author, timestamp)
