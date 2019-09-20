@@ -10,8 +10,12 @@ const {
 const {
   getHello,
   resolveQuery,
+  getWeather,
   signin,
 } = require('./fetcher');
+const {
+  Weather,
+} = require('./schema/weather');
 const {
   UserConnection, UserFieldFilter, UserFieldOrder, UserMutations, User,
 } = require('./schema/user');
@@ -37,8 +41,14 @@ const queryType = new GraphQLObjectType({
       },
       resolve: (_, args) => signin(args),
     },
-    // TODO create a top level weather resolver that accepts a location parameter
     weather: {
+      type: Weather,
+      args: {
+        location: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+      },
+      resolve: (_, args) => getWeather(args),
     },
     users: {
       type: UserConnection,
