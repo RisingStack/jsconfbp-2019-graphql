@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon -r dotenv/config src/server",
+    "start:gateway": "nodemon -r dotenv/config src/gateway",
+    "start:weather": "nodemon -r dotenv/config src/weatherServer",
     "lint": "eslint --ignore-path .gitignore ."
   },
   "husky": {
@@ -24,7 +26,10 @@
   },
   "homepage": "https://github.com/RisingStack/jsconfbp-2019-graphql#readme",
   "dependencies": {
+    "@apollo/federation": "0.9.4",
+    "@apollo/gateway": "0.10.4",
     "apollo-link-http": "1.5.16",
+    "apollo-server": "2.9.3",
     "axios": "0.19.0",
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
