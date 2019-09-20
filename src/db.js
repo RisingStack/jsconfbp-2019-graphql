@@ -44,7 +44,7 @@ const createTables = () => {
     )`,
   ];
 
-  createTableQueries.forEach((query) => pool.query(query));
+  return createTableQueries.map((query) => pool.query(query));
 };
 
 const dropTables = () => {
@@ -54,11 +54,44 @@ const dropTables = () => {
     'DROP TABLE IF EXISTS comments',
   ];
 
-  dropTableQueries.forEach((query) => pool.query(query));
+  return dropTableQueries.map((query) => pool.query(query));
+};
+
+const createTestData = () => {
+  // password for test user: password
+  const testDataQueries = [
+    `INSERT INTO users(id, name, username, email, password_digest)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b58c', 'Tyler', 'tyler1337', 'tyler@risingstack.com', '$2b$10$yv9DxXTpvBmBYKu8rXoSIONn3BZB5/jQRDPMKt/YUAq8eTYoXGwKu')
+    RETURNING *
+    `,
+    `INSERT INTO users(id, name, username, email, password_digest)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b68c', 'Marla', 'marlaSinger', 'marla@risingstack.com', '$2b$10$yv9DxXTpvBmBYKu8rXoSIONn3BZB5/jQRDPMKt/YUAq8eTYoXGwKu')
+    RETURNING *
+    `,
+    `INSERT INTO posts(id, title, description, content, author, timestamp)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b78c', 'Test Post', 'This is my test post', 'Test post Content', 'tyler@risingstack.com', '2019-09-15T07:30:57.392Z')
+    RETURNING *
+    `,
+    `INSERT INTO posts(id, title, description, content, author, timestamp)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b58a', 'Test Post 2', 'This is my test post', 'Test post Content', 'tyler@risingstack.com', '2019-09-18T07:30:57.392Z')
+    RETURNING *
+    `,
+    `INSERT INTO comments(id, content, author, post, timestamp)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b88c', 'Test Comment', 'tyler@risingstack.com', '8aaf37cf-94c9-4c6a-b566-0265ce34b78c', '2019-09-15T08:30:57.392Z')
+    RETURNING *
+    `,
+    `INSERT INTO comments(id, content, author, post, timestamp)
+    VALUES('8aaf37cf-94c9-4c6a-b566-0265ce34b98c', 'Test Comment 2', 'marla@risingstack.com', '8aaf37cf-94c9-4c6a-b566-0265ce34b78c', '2019-09-16T07:30:57.392Z')
+    RETURNING *
+    `,
+  ];
+
+  return testDataQueries.map((query) => pool.query(query));
 };
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
   createTables,
   dropTables,
+  createTestData,
 };

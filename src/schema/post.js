@@ -16,8 +16,8 @@ const {
 } = require('./common');
 const { CommentConnection, CommentFieldFilter, CommentFieldOrder } = require('./comment');
 
-const PostField = new GraphQLEnumType({
-  name: 'PostField',
+const PostArgField = new GraphQLEnumType({
+  name: 'PostArgField',
   values: {
     id: { value: 'id' },
     content: { value: 'content' },
@@ -32,7 +32,7 @@ const PostFieldFilter = new GraphQLInputObjectType({
   name: 'PostFieldFilter',
   fields: {
     value: { type: GraphQLString },
-    field: { type: PostField },
+    field: { type: PostArgField },
     operation: { type: FilterOperation },
   },
 });
@@ -40,7 +40,7 @@ const PostFieldFilter = new GraphQLInputObjectType({
 const PostFieldOrder = new GraphQLInputObjectType({
   name: 'PostFieldOrder',
   fields: {
-    field: { type: PostField },
+    field: { type: PostArgField },
     direction: { type: OrderDirection },
   },
 });
@@ -129,7 +129,7 @@ const PostMutations = new GraphQLObjectType({
 });
 
 module.exports = {
-  PostField,
+  PostArgField,
   PostFieldFilter,
   PostFieldOrder,
   Post,

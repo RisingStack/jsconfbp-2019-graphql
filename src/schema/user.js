@@ -17,8 +17,8 @@ const {
 const { PostConnection, PostFieldFilter, PostFieldOrder } = require('./post');
 const { CommentConnection, CommentFieldFilter, CommentFieldOrder } = require('./comment');
 
-const UserField = new GraphQLEnumType({
-  name: 'UserField',
+const UserArgField = new GraphQLEnumType({
+  name: 'UserArgField',
   values: {
     id: { value: 'id' },
     name: { value: 'name' },
@@ -31,7 +31,7 @@ const UserFieldFilter = new GraphQLInputObjectType({
   name: 'UserFieldFilter',
   fields: {
     value: { type: GraphQLString },
-    field: { type: UserField },
+    field: { type: UserArgField },
     operation: { type: FilterOperation },
   },
 });
@@ -39,7 +39,7 @@ const UserFieldFilter = new GraphQLInputObjectType({
 const UserFieldOrder = new GraphQLInputObjectType({
   name: 'UserFieldOrder',
   fields: {
-    field: { type: UserField },
+    field: { type: UserArgField },
     direction: { type: OrderDirection },
   },
 });
@@ -133,7 +133,7 @@ const UserMutations = new GraphQLObjectType({
 });
 
 module.exports = {
-  UserField,
+  UserArgField,
   UserFieldFilter,
   UserFieldOrder,
   User,

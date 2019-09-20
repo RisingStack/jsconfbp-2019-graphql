@@ -14,8 +14,8 @@ const {
   Node, PageInfo, FilterOperation, OrderDirection, Datetime,
 } = require('./common');
 
-const CommentField = new GraphQLEnumType({
-  name: 'CommentField',
+const CommentArgField = new GraphQLEnumType({
+  name: 'CommentArgField',
   values: {
     id: { value: 'id' },
     content: { value: 'content' },
@@ -29,7 +29,7 @@ const CommentFieldFilter = new GraphQLInputObjectType({
   name: 'CommentFieldFilter',
   fields: {
     value: { type: GraphQLString },
-    field: { type: CommentField },
+    field: { type: CommentArgField },
     operation: { type: FilterOperation },
   },
 });
@@ -37,7 +37,7 @@ const CommentFieldFilter = new GraphQLInputObjectType({
 const CommentFieldOrder = new GraphQLInputObjectType({
   name: 'CommentFieldOrder',
   fields: {
-    field: { type: CommentField },
+    field: { type: CommentArgField },
     direction: { type: OrderDirection },
   },
 });
@@ -115,7 +115,7 @@ const CommentMutations = new GraphQLObjectType({
 });
 
 module.exports = {
-  CommentField,
+  CommentArgField,
   CommentFieldFilter,
   CommentFieldOrder,
   Comment,
