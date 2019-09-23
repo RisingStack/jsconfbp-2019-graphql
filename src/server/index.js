@@ -2,17 +2,18 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const helmet = require('helmet');
 const cors = require('cors');
-const { mergeSchemas } = require('graphql-tools');
-const pokemonSchema = require('./pokemonSchema');
+// const { mergeSchemas } = require('graphql-tools');
+// const pokemonSchema = require('./pokemonSchema');
+const { makeExecutableSchema } = require('graphql-tools');
 
 const db = require('./db');
 
 // Graphql Types - cut rootValue from graphqlHTTP when used
-const schema = require('./schema');
+// const schema = require('./schema');
 const config = require('./config');
 
 // Raw Graphql schema language - add rootValue from graphqlHTTP when used
-// const { schema, rootValue } = require('./gqlSchema');
+const { typeDefs, resolvers } = require('./gqlSchema');
 
 const app = express();
 
@@ -27,8 +28,9 @@ app.use(cors({
 }));
 
 app.use('/graphql', graphqlHTTP(async () => ({
-  schema: mergeSchemas({
-    schemas: [schema, await pokemonSchema()],
+  schema: makeExecutableSchema({
+    typeDefs,
+    resolvers,
   }),
   // rootValue,
   graphiql: true,
