@@ -1,12 +1,7 @@
-const { URL } = require('url');
-const querystring = require('querystring');
-
-const axios = require('axios');
 const bcrypt = require('bcrypt');
 const { get } = require('lodash');
 const uuid = require('uuidv4').default;
 
-const config = require('./config');
 const db = require('./db');
 
 
@@ -130,40 +125,13 @@ const createComment = async (args) => {
 };
 
 
-async function getWeather() {
-  const city = 'London';
-  const APPID = config.openWeatherMapAPIKey;
-  const query = querystring.stringify({
-    q: city,
-    units: 'metric',
-    APPID,
-  });
-
-  const url = new URL('https://api.openweathermap.org/data/2.5/weather');
-  url.search = query;
-
-  const { data } = await axios
-    .get(url.toString());
-
-  const {
-    coord: {
-      lat,
-      lon,
-    },
-    main: {
-      humidity,
-      temp,
-      pressure,
-    },
-  } = data;
-
-  return {
-    lat,
-    lon,
-    humidity,
-    pressure,
-    temp,
-  };
+// TODO fire a request to the open weather API to fetch the today's weather
+// https://api.openweathermap.org/data/2.5/weather
+// "config.openWeatherMapAPIKey" should contain your API key from the environment
+// Make sure you only return items that you have declared in your schema!
+function getWeather() {
+  // eslint-disable-next-line no-console
+  console.log('JS Conf Budapest 2019!');
 }
 
 module.exports = {
