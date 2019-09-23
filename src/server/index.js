@@ -2,6 +2,8 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const helmet = require('helmet');
 const cors = require('cors');
+const { mergeSchemas } = require('graphql-tools');
+const pokemonSchema = require('./pokemonSchema');
 
 const db = require('./db');
 
@@ -25,7 +27,9 @@ app.use(cors({
 }));
 
 app.use('/graphql', graphqlHTTP(async () => ({
-  schema,
+  schema: mergeSchemas({
+    schemas: [schema, await pokemonSchema()],
+  }),
   // rootValue,
   graphiql: true,
   customFormatErrorFn: (error) => {
