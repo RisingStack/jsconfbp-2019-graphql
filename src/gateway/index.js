@@ -3,7 +3,14 @@ const { ApolloServer } = require('apollo-server');
 
 const gateway = new ApolloGateway({
   serviceList: [
-    // TODO (5) list locally running services
+    {
+      name: 'cms',
+      url: 'http://localhost:8000/graphql',
+    },
+    {
+      name: 'weather',
+      url: 'http://localhost:8100/graphql',
+    },
   ],
 });
 

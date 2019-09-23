@@ -42,5 +42,7 @@ app.use('/graphql', graphqlHTTP(async () => ({
   },
 })));
 
+const port = Number(config.port) + 100;
+
 // eslint-disable-next-line no-console
-app.listen(config.port, () => console.log(`Express GraphQL Server Is Listening on port ${config.port}`));
+app.listen(port, () => console.log(`Express GraphQL Server Is Listening on port ${port}`));
